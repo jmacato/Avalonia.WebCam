@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.WebCam.Sample", "Avalonia.WebCam.Sample\Avalonia.WebCam.Sample.csproj", "{D6B8B034-5C9E-4851-BE24-533B03E826E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.WebCam", "Avalonia.WebCam\Avalonia.WebCam.csproj", "{AE94144C-DEC0-442A-A208-61F76B8E4061}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6B8B034-5C9E-4851-BE24-533B03E826E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6B8B034-5C9E-4851-BE24-533B03E826E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6B8B034-5C9E-4851-BE24-533B03E826E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6B8B034-5C9E-4851-BE24-533B03E826E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE94144C-DEC0-442A-A208-61F76B8E4061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE94144C-DEC0-442A-A208-61F76B8E4061}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE94144C-DEC0-442A-A208-61F76B8E4061}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE94144C-DEC0-442A-A208-61F76B8E4061}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {074B7B36-F683-4604-B304-51A396F92651}
+	EndGlobalSection
+EndGlobal
