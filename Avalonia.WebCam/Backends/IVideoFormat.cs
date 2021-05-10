@@ -2,6 +2,7 @@
 {
     public interface IVideoFormat
     {
-        string FormatName { get;  }
+        string FormatName { get; }
+        PixelSize Resolution { get; }
     }
 }

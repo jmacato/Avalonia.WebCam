@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Avalonia; // Size
 using Avalonia.Media; // PixelFormats 
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 
 namespace Avalonia.WebCam.Backend.Windows
 {
@@ -46,6 +49,86 @@ namespace Avalonia.WebCam.Backend.Windows
     // By default, GetBitmap() returns image of System.Drawing.Bitmap.
     // If WPF, define 'USBCAMERA_WPF' symbol that makes GetBitmap() returns image of Bitmap.
 
+    internal readonly struct WindowsVideoFormats : IVideoFormat
+    {
+        public WindowsVideoFormats(string formatName, PixelSize resolution, WindowsCapture.VideoFormat nativeVideoFormat)
+        {
+            FormatName = formatName;
+            Resolution = resolution;
+            NativeVideoFormat = nativeVideoFormat;
+        }
+
+        public string FormatName { get; }
+        public PixelSize Resolution { get; }
+        public WindowsCapture.VideoFormat NativeVideoFormat { get; }
+    }
+
+    internal readonly struct WindowsCamera : ICamera
+    {
+        public WindowsCamera(string s, int i)
+        {
+            CameraName = s;
+            CameraIndex = i;
+        }
+
+        public int CameraIndex { get; }
+        public string CameraName { get; }
+    }
+
+    internal class WindowsCameraBackend : AvaloniaObject, ICameraBackend
+    {
+        public IVideoFormat[] GetAvailableVideoFormats(ICamera target)
+        {
+            if (target is not WindowsCamera camera)
+            {
+                throw new ArgumentException("Provided ICamera object is not for this platform.",
+                    target.ToString());
+            }
+
+            var camera_list = WindowsCapture.FindDevices();
+
+            if (camera.CameraIndex >= 0 && camera.CameraIndex < camera_list.Length)
+            {
+                var videoFormats = WindowsCapture.GetVideoFormat(camera.CameraIndex);
+
+                var genericVF = new IVideoFormat[videoFormats.Length];
+ 
+                for (var i = 0; i < genericVF.Length; i++)
+                {
+                    var vf = videoFormats[i];
+                    genericVF[i] = new WindowsVideoFormats(vf.SubType, 
+                        new PixelSize((int) vf.Size.Width, (int) vf.Size.Height), vf);
+                }
+
+                return genericVF;
+            }
+
+            throw new ArgumentException("Specified camera is not available.", target.CameraName);
+        }
+
+        public ICamera[] GetAvailableCameras()
+        {
+            var devices_name = WindowsCapture.FindDevices();
+            var cameraArray = new ICamera[devices_name.Length];
+
+            for (var i = 0; i < devices_name.Length; i++)
+            {
+                cameraArray[i] = new WindowsCamera(devices_name[i], i) ;
+            }
+
+            return cameraArray;
+        }
+
+        public async Task<bool> TryStartAsync(
+            ICamera targetCamera,
+            IVideoFormat targetVideoFormat,
+            Action<ICamera, IVideoFormat, ILockedFramebuffer> frameCallback)
+        {
+            return false;
+        }
+
+        public bool IsRunning { get; }
+    }
 
     internal class WindowsCapture
     {
@@ -71,7 +154,7 @@ namespace Avalonia.WebCam.Backend.Windows
         /// <returns>Array of camera name, or if no device found, zero length array.</returns>
         public static string[] FindDevices()
         {
-            return DirectShow.GetFiltes(DirectShow.DsGuid.CLSID_VideoInputDeviceCategory).ToArray();
+            return DirectShow.GetFilters(DirectShow.DsGuid.CLSID_VideoInputDeviceCategory).ToArray();
         }
 
         /// <summary>
@@ -219,7 +302,7 @@ namespace Avalonia.WebCam.Backend.Windows
                                 cam_ctrl.Set(item, value, (int) flag);
                             Func<int> get = () =>
                             {
-                                int value = 0;
+                                var value = 0;
                                 cam_ctrl.Get(item, ref value, ref flags);
                                 return value;
                             };
@@ -252,7 +335,7 @@ namespace Avalonia.WebCam.Backend.Windows
                                 vid_ctrl.Set(item, value, (int) flag);
                             Func<int> get = () =>
                             {
-                                int value = 0;
+                                var value = 0;
                                 vid_ctrl.Get(item, ref value, ref flags);
                                 return value;
                             };
@@ -319,8 +402,8 @@ namespace Avalonia.WebCam.Backend.Windows
 
                 public override string ToString()
                 {
-                    return string.Format("Available={0}, Min={1}, Max={2}, Step={3}, Default={4}, Flags={5}", Available,
-                        Min, Max, Step, Default, Flags);
+                    return
+                        $"Available={Available}, Min={Min}, Max={Max}, Step={Step}, Default={Default}, Flags={Flags}";
                 }
             }
         }
@@ -402,7 +485,7 @@ namespace Avalonia.WebCam.Backend.Windows
             // まずサイズ0でGetCurrentBufferを呼び出しバッファサイズを取得し
             // バッファ確保して再度GetCurrentBufferを呼び出す。
             // 取得した画像は逆になっているので反転させる必要がある。
-            int sz = 0;
+            var sz = 0;
             i_grabber.GetCurrentBuffer(ref sz, IntPtr.Zero); // IntPtr.Zeroで呼び出してバッファサイズ取得
             if (sz == 0) return null;
 
@@ -466,12 +549,12 @@ namespace Avalonia.WebCam.Backend.Windows
 
             var bgraArray = new BgraColor[height * width];
 
-            for (int y = 0; y < height; y++)
+            for (var y = 0; y < height; y++)
             {
                 var src_idx = buffer.Length - (stride * (y + 1));
 
-                int curx = 0;
-                for (int x = 0; x < stride; x += 3)
+                var curx = 0;
+                for (var x = 0; x < stride; x += 3)
                 {
                     var b24 = buffer[src_idx + x];
                     var g24 = buffer[src_idx + x + 1];
@@ -487,10 +570,11 @@ namespace Avalonia.WebCam.Backend.Windows
                 unsafe
                 {
                     fixed (void* src = &bgraArray[0])
-                        Buffer.MemoryCopy(src, lockedBitmap.Address.ToPointer(), (uint)_backBufferBytes, (uint)_backBufferBytes);
+                        Buffer.MemoryCopy(src, lockedBitmap.Address.ToPointer(), (uint) _backBufferBytes,
+                            (uint) _backBufferBytes);
                 }
             }
- 
+
             return result;
         }
 
@@ -608,7 +692,7 @@ namespace Avalonia.WebCam.Backend.Windows
 
             // VIDEO_STREAM_CONFIG_CAPSは現在では非推奨。まずは固定サイズを探す
             // VIDEO_STREAM_CONFIG_CAPS is deprecated. First, find just the fixed size.
-            for (int i = 0; i < formats.Length; i++)
+            for (var i = 0; i < formats.Length; i++)
             {
                 var item = formats[i];
 
@@ -628,7 +712,7 @@ namespace Avalonia.WebCam.Backend.Windows
 
             // 固定サイズが見つからなかった。可変サイズの範囲を探す。
             // Not found fixed size, search for variable size.
-            for (int i = 0; i < formats.Length; i++)
+            for (var i = 0; i < formats.Length; i++)
             {
                 var item = formats[i];
 
@@ -642,11 +726,11 @@ namespace Avalonia.WebCam.Backend.Windows
                 if (item.Caps.OutputGranularityX == 0) continue;
                 if (item.Caps.OutputGranularityY == 0) continue;
 
-                for (int w = item.Caps.MinOutputSize.cx;
+                for (var w = item.Caps.MinOutputSize.cx;
                     w < item.Caps.MaxOutputSize.cx;
                     w += item.Caps.OutputGranularityX)
                 {
-                    for (int h = item.Caps.MinOutputSize.cy;
+                    for (var h = item.Caps.MinOutputSize.cy;
                         h < item.Caps.MaxOutputSize.cy;
                         h += item.Caps.OutputGranularityY)
                     {
@@ -691,7 +775,7 @@ namespace Avalonia.WebCam.Backend.Windows
             var cap_data = Marshal.AllocHGlobal(cap_size);
 
             // 列挙
-            for (int i = 0; i < cap_count; i++)
+            for (var i = 0; i < cap_count; i++)
             {
                 var entry = new VideoFormat();
 
@@ -818,7 +902,7 @@ namespace Avalonia.WebCam.Backend.Windows
 
             public override string ToString()
             {
-                return string.Format("{0}, {1}, {2}, {3}, {4}", MajorType, SubType, Size, TimePerFrame, CapsString());
+                return $"{MajorType}, {SubType}, {Size}, {TimePerFrame}, {CapsString()}";
             }
 
             private string CapsString()

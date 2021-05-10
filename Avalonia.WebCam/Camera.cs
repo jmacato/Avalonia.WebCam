@@ -2,11 +2,12 @@
 using System;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
+using Avalonia.WebCam.Backend.Windows;
 
 namespace Avalonia.WebCam
 {
     public class Camera : Control
-    { 
+    {
         /// <summary>
         /// Defines the <see cref="Stretch"/> property.
         /// </summary>
@@ -23,10 +24,10 @@ namespace Avalonia.WebCam
 
         static Camera()
         {
-            AffectsRender<Camera>( StretchProperty);
-            AffectsMeasure<Camera>(  StretchProperty);
+            AffectsRender<Camera>(StretchProperty);
+            AffectsMeasure<Camera>(StretchProperty);
         }
- 
+
         /// <summary>
         /// Gets or sets a value controlling how the image will be stretched.
         /// </summary>
@@ -44,69 +45,78 @@ namespace Avalonia.WebCam
             get { return GetValue(StretchDirectionProperty); }
             set { SetValue(StretchDirectionProperty, value); }
         }
+        //
+        // /// <summary>
+        // /// Renders the control.
+        // /// </summary>
+        // /// <param name="context">The drawing context.</param>
+        // public override void Render(DrawingContext context)
+        // {
+        //     var source = Source;
+        //
+        //     if (source != null && Bounds.Width > 0 && Bounds.Height > 0)
+        //     {
+        //         Rect viewPort = new Rect(Bounds.Size);
+        //         Size sourceSize = source.Size;
+        //
+        //         Vector scale = Stretch.CalculateScaling(Bounds.Size, sourceSize, StretchDirection);
+        //         Size scaledSize = sourceSize * scale;
+        //         Rect destRect = viewPort
+        //             .CenterRect(new Rect(scaledSize))
+        //             .Intersect(viewPort);
+        //         Rect sourceRect = new Rect(sourceSize)
+        //             .CenterRect(new Rect(destRect.Size / scale));
+        //
+        //         var interpolationMode = RenderOptions.GetBitmapInterpolationMode(this);
+        //
+        //         context.DrawImage(source, sourceRect, destRect, interpolationMode);
+        //     }
+        // }
+        //
+        // /// <summary>
+        // /// Measures the control.
+        // /// </summary>
+        // /// <param name="availableSize">The available size.</param>
+        // /// <returns>The desired size of the control.</returns>
+        // protected override Size MeasureOverride(Size availableSize)
+        // {
+        //     var source = Source;
+        //     var result = new Size();
+        //
+        //     if (source != null)
+        //     {
+        //         result = Stretch.CalculateSize(availableSize, source.Size, StretchDirection);
+        //     }
+        //
+        //     return result;
+        // }
+        //
+        // /// <inheritdoc/>
+        // protected override Size ArrangeOverride(Size finalSize)
+        // {
+        //     // var source = Source;
+        //     if (source != null)
+        //     {
+        //         var sourceSize = source.Size;
+        //         var result = Stretch.CalculateSize(finalSize, sourceSize);
+        //         return result;
+        //     }
+        //     else
+        //     {
+        //         return new Size();
+        //     }
+        // }
 
-        /// <summary>
-        /// Renders the control.
-        /// </summary>
-        /// <param name="context">The drawing context.</param>
-        public override void Render(DrawingContext context)
+        public void DebugDo()
         {
-            var source = Source;
+            var k = new WindowsCameraBackend();
 
-            if (source != null && Bounds.Width > 0 && Bounds.Height > 0)
-            {
-                Rect viewPort = new Rect(Bounds.Size);
-                Size sourceSize = source.Size;
 
-                Vector scale = Stretch.CalculateScaling(Bounds.Size, sourceSize, StretchDirection);
-                Size scaledSize = sourceSize * scale;
-                Rect destRect = viewPort
-                    .CenterRect(new Rect(scaledSize))
-                    .Intersect(viewPort);
-                Rect sourceRect = new Rect(sourceSize)
-                    .CenterRect(new Rect(destRect.Size / scale));
+           var g = k.GetAvailableCameras();
 
-                var interpolationMode = RenderOptions.GetBitmapInterpolationMode(this);
-
-                context.DrawImage(source, sourceRect, destRect, interpolationMode);
-            }
-        }
-
-        /// <summary>
-        /// Measures the control.
-        /// </summary>
-        /// <param name="availableSize">The available size.</param>
-        /// <returns>The desired size of the control.</returns>
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            var source = Source;
-            var result = new Size();
-
-            if (source != null)
-            {
-                result = Stretch.CalculateSize(availableSize, source.Size, StretchDirection);
-            }
-
-            return result;
-        }
-
-        /// <inheritdoc/>
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            var source = Source;
-
-            if (source != null)
-            {
-                var sourceSize = source.Size;
-                var result = Stretch.CalculateSize(finalSize, sourceSize);
-                return result;
-            }
-            else
-            {
-                return new Size();
-            }
+           var f = k.GetAvailableVideoFormats(g[0]);
+           
         }
     }
 }
 
-}

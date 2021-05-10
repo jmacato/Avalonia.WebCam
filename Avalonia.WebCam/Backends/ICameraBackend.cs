@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 
 namespace Avalonia.WebCam.Backend
 {
@@ -14,7 +15,7 @@ namespace Avalonia.WebCam.Backend
         Task<bool> TryStartAsync(
             ICamera targetCamera,
             IVideoFormat targetVideoFormat, 
-            Action<ICamera, IVideoFormat, IBitmap> frameCallback);
+            Action<ICamera, IVideoFormat, ILockedFramebuffer> frameCallback);
         
         bool IsRunning { get; }
     }

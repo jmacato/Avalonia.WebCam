@@ -8,8 +8,6 @@ namespace Avalonia.WebCam.Backend.Windows
 {
     internal static class DirectShow
     {
-        #region Function
-
         /// <summary>COMオブジェクトのインスタンスを作成する。</summary>
         public static object CoCreateInstance(Guid clsid)
         {
@@ -53,7 +51,7 @@ namespace Avalonia.WebCam.Backend.Windows
         }
 
         /// <summary>フィルタの一覧を取得する。</summary>
-        public static List<string> GetFiltes(Guid category)
+        public static List<string> GetFilters(Guid category)
         {
             var result = new List<string>();
 
@@ -241,12 +239,7 @@ namespace Avalonia.WebCam.Backend.Windows
             if (mt.pUnk != IntPtr.Zero) Marshal.FreeCoTaskMem(mt.pUnk);
             mt = null;
         }
-
-        #endregion
-
-
-        #region Interface
-
+        
         [ComVisible(true), ComImport(), Guid("56a8689f-0ad4-11ce-b03a-0020af0ba770"),
          InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         public interface IFilterGraph
@@ -595,12 +588,7 @@ namespace Avalonia.WebCam.Backend.Windows
             [PreserveSig()]
             int BufferCB(double SampleTime, IntPtr pBuffer, int BufferLen);
         }
-
-        #endregion
-
-
-        #region Structure
-
+ 
         [Serializable]
         [StructLayout(LayoutKind.Sequential), ComVisible(false)]
         public class AM_MEDIA_TYPE
@@ -733,7 +721,7 @@ namespace Avalonia.WebCam.Backend.Windows
 
             public override string ToString()
             {
-                return string.Format("{{{0}, {1}}}", cx, cy);
+                return $"{{{cx}, {cy}}}";
             } // for debugging.
         }
 
@@ -748,14 +736,9 @@ namespace Avalonia.WebCam.Backend.Windows
 
             public override string ToString()
             {
-                return string.Format("{{{0}, {1}, {2}, {3}}}", Left, Top, Right, Bottom);
+                return $"{{{Left}, {Top}, {Right}, {Bottom}}}";
             } // for debugging.
         }
-
-        #endregion
-
-
-        #region Enum
 
         [ComVisible(false)]
         internal enum PIN_DIRECTION
@@ -805,12 +788,7 @@ namespace Avalonia.WebCam.Backend.Windows
             BacklightCompensation = 8,
             Gain = 9
         }
-
-        #endregion
-
-
-        #region Guid
-
+        
         public static class DsGuid
         {
             // MediaType
@@ -896,7 +874,7 @@ namespace Avalonia.WebCam.Backend.Windows
                     if (elem.Length >= 2)
                     {
                         var text = string.Join("_", elem.Skip(1).ToArray());
-                        return string.Format("[{0}]", text);
+                        return $"[{text}]";
                     }
                     else
                     {
@@ -907,8 +885,6 @@ namespace Avalonia.WebCam.Backend.Windows
                 // 対応してない場合はToStringを呼び出す。
                 return guid.ToString();
             }
-        }
-
-        #endregion
+        } 
     }
 }
