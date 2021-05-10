@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/t/SDLK2A3femiPAnKegloEIgLi9GspoHHV9bkxZqWL7rq95kE/mz6ulhYsss+yvcA3cSeUwbTtyz5RhT1fYDQ==",
+  "dgSpecHash": "xv2u00F75GalAFDyVf0TXwFn1x+5LbyRTAlugmohoB0DxZk1pGaTC0H9xXWKB4J7UpzM3Zw1uYgPGBJh2V7kbQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\m1\\source\\repos\\Avalonia.WebCam.Sample\\Avalonia.WebCam.Sample\\Avalonia.WebCam.Sample.csproj",
+  "projectFilePath": "C:\\Users\\m1\\RiderProjects\\Avalonia.WebCam\\Avalonia.WebCam.Sample\\Avalonia.WebCam.Sample.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\m1\\.nuget\\packages\\avalonia\\0.10.3\\avalonia.0.10.3.nupkg.sha512",
     "C:\\Users\\m1\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.0.2020091801\\avalonia.angle.windows.natives.2.1.0.2020091801.nupkg.sha512",

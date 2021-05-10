@@ -57,11 +57,7 @@ namespace Avalonia.WebCam.Sample.Views
             {
                 Dispatcher.UIThread.InvokeAsync(() =>
                 {
-
-                     if(image is not null)
                     image.Source = camera.GetBitmap();
-
-                    
                 });
             };
 

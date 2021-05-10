@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mT5r3aAZ5UgPrc/wwDXRzVgiXHYzmFW3sKoUX9qmSS8uHN7xZK5N11i4y3SQDyNBspLv7tfaClhWmNGWvq/0cw==",
+  "dgSpecHash": "1vgkaFmWaT38twj0P7kQNP738ptIy8wI9PMv+OFf211OMB5Wudkos6eTeZ7hFToxgeyqdadwchlvKMZ15LlUkQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\m1\\source\\repos\\Avalonia.WebCam.Sample\\Avalonia.WebCam\\Avalonia.WebCam.csproj",
+  "projectFilePath": "C:\\Users\\m1\\RiderProjects\\Avalonia.WebCam\\Avalonia.WebCam\\Avalonia.WebCam.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\m1\\.nuget\\packages\\avalonia\\0.10.3\\avalonia.0.10.3.nupkg.sha512",
     "C:\\Users\\m1\\.nuget\\packages\\avalonia.remote.protocol\\0.10.3\\avalonia.remote.protocol.0.10.3.nupkg.sha512",

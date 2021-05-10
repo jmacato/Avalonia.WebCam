@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\m1\\source\\repos\\Avalonia.WebCam.Sample\\Avalonia.WebCam\\Avalonia.WebCam.csproj": {}
+    "C:\\Users\\m1\\RiderProjects\\Avalonia.WebCam\\Avalonia.WebCam\\Avalonia.WebCam.csproj": {}
   },
   "projects": {
-    "C:\\Users\\m1\\source\\repos\\Avalonia.WebCam.Sample\\Avalonia.WebCam\\Avalonia.WebCam.csproj": {
+    "C:\\Users\\m1\\RiderProjects\\Avalonia.WebCam\\Avalonia.WebCam\\Avalonia.WebCam.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\m1\\source\\repos\\Avalonia.WebCam.Sample\\Avalonia.WebCam\\Avalonia.WebCam.csproj",
+        "projectUniqueName": "C:\\Users\\m1\\RiderProjects\\Avalonia.WebCam\\Avalonia.WebCam\\Avalonia.WebCam.csproj",
         "projectName": "Avalonia.WebCam",
-        "projectPath": "C:\\Users\\m1\\source\\repos\\Avalonia.WebCam.Sample\\Avalonia.WebCam\\Avalonia.WebCam.csproj",
+        "projectPath": "C:\\Users\\m1\\RiderProjects\\Avalonia.WebCam\\Avalonia.WebCam\\Avalonia.WebCam.csproj",
         "packagesPath": "C:\\Users\\m1\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\m1\\source\\repos\\Avalonia.WebCam.Sample\\Avalonia.WebCam\\obj\\",
+        "outputPath": "C:\\Users\\m1\\RiderProjects\\Avalonia.WebCam\\Avalonia.WebCam\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
